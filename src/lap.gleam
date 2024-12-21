@@ -21,6 +21,9 @@ pub opaque type IntervalData {
   )
 }
 
+type IntervalTuple =
+  #(String, String, Int)
+
 pub fn start_in_microseconds(marker: String) -> LapData {
   start(marker, duration.MicroSecond)
 }
@@ -75,7 +78,7 @@ pub fn time_with_time(data: LapData, marker: String, time: Time) -> LapData {
   )
 }
 
-pub fn intervals(data: LapData) -> List(#(String, String, Int)) {
+pub fn intervals(data: LapData) -> List(IntervalTuple) {
   data.intervals
   |> list.map(fn(interval) {
     #(
@@ -87,14 +90,17 @@ pub fn intervals(data: LapData) -> List(#(String, String, Int)) {
   |> list.reverse
 }
 
-pub fn pretty_print(data: LapData) -> String {
+pub fn sort_max(interval_list: List(IntervalTuple)) -> List(IntervalTuple) {
+  interval_list |> list.sort(fn(a, b) { int.compare(b.2, a.2) })
+}
+
+pub fn pretty_print(interval_list: List(IntervalTuple)) -> String {
   let table =
     tobble.builder()
     |> tobble.add_row(["Start", "End", "Interval"])
 
   let table =
-    data
-    |> intervals
+    interval_list
     |> list.fold(table, fn(builder, interval) {
       builder
       |> tobble.add_row([

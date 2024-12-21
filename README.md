@@ -27,12 +27,12 @@ pub fn main() {
   data |> lap.intervals |> io.debug
   // [#("1", "2", 10), #("2", "3", 30)]
 
-  data |> lap.pretty_print |> io.println
+  data |> lap.intervals |> lap.sort_max |> lap.pretty_print |> io.println
   // +-------+-----+----------+
   // | Start | End | Interval |
   // +-------+-----+----------+
-  // | 1     | 2   | 10       |
   // | 2     | 3   | 30       |
+  // | 1     | 2   | 10       |
   // +-------+-----+----------+
 }
 ```
