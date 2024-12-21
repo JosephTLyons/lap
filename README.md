@@ -3,6 +3,8 @@
 [![Package Version](https://img.shields.io/hexpm/v/lap)](https://hex.pm/packages/lap)
 [![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/lap/)
 
+Quick'n dirty timing of your Gleam code.
+
 ```sh
 gleam add lap
 ```
