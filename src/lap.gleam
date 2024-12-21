@@ -1,21 +1,8 @@
 import birl.{type Time}
 import birl/duration.{type Unit}
 import gleam/int
-import gleam/io
 import gleam/list
 import gleam/string
-
-pub fn main() {
-  let data = start_in_milliseconds("1")
-
-  // Some work
-
-  let data = data |> time("2")
-
-  // Some work
-
-  data |> time("3") |> intervals |> io.debug
-}
 
 pub opaque type LapData {
   LapData(
@@ -114,4 +101,3 @@ pub fn pretty_print(data: LapData) -> String {
 // TODO: TOML
 // TODO: README.md
 // TODO: Publish
-// TODO: lap() name
