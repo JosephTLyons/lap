@@ -2,7 +2,7 @@ import birl.{type Time}
 import birl/duration.{type Unit}
 import gleam/int
 import gleam/list
-import gleam/string
+import tobble
 
 pub opaque type LapData {
   LapData(
@@ -88,12 +88,25 @@ pub fn intervals(data: LapData) -> List(#(String, String, Int)) {
 }
 
 pub fn pretty_print(data: LapData) -> String {
-  let interval_string = fn(interval: #(String, String, Int)) {
-    interval.0 <> " - " <> interval.1 <> ": " <> { interval.2 |> int.to_string }
-  }
+  let table =
+    tobble.builder()
+    |> tobble.add_row(["Start", "End", "Interval"])
 
-  data
-  |> intervals
-  |> list.map(interval_string)
-  |> string.join("\n")
+  let table =
+    data
+    |> intervals
+    |> list.fold(table, fn(builder, interval) {
+      builder
+      |> tobble.add_row([
+        interval.0,
+        interval.1,
+        { interval.2 |> int.to_string },
+      ])
+    })
+    |> tobble.build()
+
+  case table {
+    Ok(table) -> table |> tobble.render
+    Error(_) -> ""
+  }
 }

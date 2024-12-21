@@ -20,7 +20,17 @@ pub fn main() {
 
   // Some work
 
-  data |> lap.time("3") |> lap.intervals |> io.debug
+  let data = data |> time("3")
+
+  data |> lap.intervals |> io.debug
   // [#("1", "2", 10), #("2", "3", 30)]
+
+  data |> lap.pretty_print |> io.println
+  // +-------+-----+----------+
+  // | Start | End | Interval |
+  // +-------+-----+----------+
+  // | 1     | 2   | 10       |
+  // | 2     | 3   | 30       |
+  // +-------+-----+----------+
 }
 ```

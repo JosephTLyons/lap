@@ -8,9 +8,12 @@ packages = [
   { name = "gleam_yielder", version = "1.1.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleam_yielder", source = "hex", outer_checksum = "8E4E4ECFA7982859F430C57F549200C7749823C106759F4A19A78AEA6687717A" },
   { name = "gleeunit", version = "1.2.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleeunit", source = "hex", outer_checksum = "F7A7228925D3EE7D0813C922E062BFD6D7E9310F0BEE585D3A42F3307E3CFD13" },
   { name = "ranger", version = "1.4.0", build_tools = ["gleam"], requirements = ["gleam_stdlib", "gleam_yielder"], otp_app = "ranger", source = "hex", outer_checksum = "C8988E8F8CDBD3E7F4D8F2E663EF76490390899C2B2885A6432E942495B3E854" },
+  { name = "string_width", version = "3.3.1", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "string_width", source = "hex", outer_checksum = "8A2E82ED083E56789A453C8690D1B7D1A48E3F94DC78FFAFEA7E85A4E801C291" },
+  { name = "tobble", version = "2.0.0", build_tools = ["gleam"], requirements = ["gleam_stdlib", "gleam_yielder", "string_width"], otp_app = "tobble", source = "hex", outer_checksum = "2F17D5AE53DD9782F0729ACF3B3FEC4C48C9E8977744B9503C19D2E76B30BA03" },
 ]
 
 [requirements]
 birl = { version = ">= 1.8.0 and < 2.0.0" }
 gleam_stdlib = { version = ">= 0.34.0 and < 2.0.0" }
 gleeunit = { version = ">= 1.0.0 and < 2.0.0" }
+tobble = { version = ">= 2.0.0 and < 3.0.0" }
