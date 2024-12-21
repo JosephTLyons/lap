@@ -10,11 +10,11 @@ pub fn main() {
 
   // Some work
 
-  let data = data |> lap("2")
+  let data = data |> time("2")
 
   // Some work
 
-  data |> lap("3") |> intervals |> io.debug
+  data |> time("3") |> intervals |> io.debug
 }
 
 pub opaque type LapData {
@@ -67,12 +67,12 @@ pub fn start_with_time(
   LapData(time:, marker:, duration_unit:, intervals: [])
 }
 
-pub fn lap(data: LapData, marker: String) -> LapData {
-  lap_with_time(data, marker, birl.now())
+pub fn time(data: LapData, marker: String) -> LapData {
+  time_with_time(data, marker, birl.now())
 }
 
 @internal
-pub fn lap_with_time(data: LapData, marker: String, time: Time) -> LapData {
+pub fn time_with_time(data: LapData, marker: String, time: Time) -> LapData {
   let #(start_marker, end_marker) = case data.intervals {
     [] -> #(data.marker, marker)
     [last_interval, ..] -> #(last_interval.end_marker, marker)

@@ -4,7 +4,7 @@
 [![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/lap/)
 
 ```sh
-gleam add lap
+gleam add --dev lap
 ```
 ```gleam
 import lap
@@ -15,11 +15,11 @@ pub fn main() {
 
   // Some work
 
-  let data = data |> lap.lap("2")
+  let data = data |> lap.time("2")
 
   // Some work
 
-  data |> lap.lap("3") |> lap.intervals |> io.debug
+  data |> lap.time("3") |> lap.intervals |> io.debug
   // [#("1", "2", 10), #("2", "3", 30)]
 }
 ```
