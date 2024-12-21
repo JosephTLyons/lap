@@ -6,8 +6,9 @@ import tobble
 
 pub opaque type LapData {
   LapData(
-    time: Time,
-    initial_marker: String,
+    first_marker: String,
+    first_time: Time,
+    last_time: Time,
     duration_unit: Unit,
     intervals: List(IntervalData),
   )
@@ -54,7 +55,13 @@ pub fn start_with_time(
   duration_unit: Unit,
   time: Time,
 ) -> LapData {
-  LapData(time:, initial_marker: marker, duration_unit:, intervals: [])
+  LapData(
+    first_marker: marker,
+    first_time: time,
+    last_time: time,
+    duration_unit:,
+    intervals: [],
+  )
 }
 
 pub fn time(data: LapData, marker: String) -> LapData {
@@ -64,18 +71,28 @@ pub fn time(data: LapData, marker: String) -> LapData {
 @internal
 pub fn time_with_time(data: LapData, marker: String, time: Time) -> LapData {
   let #(start_marker, end_marker) = case data.intervals {
-    [] -> #(data.initial_marker, marker)
+    [] -> #(data.first_marker, marker)
     [previous_interval, ..] -> #(previous_interval.end_marker, marker)
   }
 
   LapData(
     ..data,
-    time:,
+    last_time: time,
     intervals: [
-      IntervalData(start_marker, end_marker, birl.difference(time, data.time)),
+      IntervalData(
+        start_marker,
+        end_marker,
+        birl.difference(time, data.last_time),
+      ),
       ..data.intervals
     ],
   )
+}
+
+pub fn total_time(data: LapData) -> Int {
+  data.last_time
+  |> birl.difference(data.first_time)
+  |> duration.blur_to(data.duration_unit)
 }
 
 pub fn intervals(data: LapData) -> List(IntervalTuple) {
