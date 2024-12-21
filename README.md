@@ -22,7 +22,7 @@ pub fn main() {
 
   // Some work
 
-  let data = data |> time("3")
+  let data = data |> lap.time("3")
 
   data |> lap.intervals |> io.debug
   // [#("1", "2", 10), #("2", "3", 30)]
