@@ -97,7 +97,3 @@ pub fn pretty_print(data: LapData) -> String {
   |> list.map(interval_string)
   |> string.join("\n")
 }
-// TODO: Docs
-// TODO: TOML
-// TODO: README.md
-// TODO: Publish
