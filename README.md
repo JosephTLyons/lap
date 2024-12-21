@@ -4,7 +4,7 @@
 [![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/lap/)
 
 ```sh
-gleam add --dev lap
+gleam add lap
 ```
 ```gleam
 import lap
