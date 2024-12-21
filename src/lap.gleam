@@ -62,7 +62,7 @@ pub fn time(data: LapData, marker: String) -> LapData {
 pub fn time_with_time(data: LapData, marker: String, time: Time) -> LapData {
   let #(start_marker, end_marker) = case data.intervals {
     [] -> #(data.marker, marker)
-    [last_interval, ..] -> #(last_interval.end_marker, marker)
+    [previous_interval, ..] -> #(previous_interval.end_marker, marker)
   }
 
   LapData(
