@@ -6,6 +6,7 @@
 ```sh
 gleam add lap
 ```
+
 ```gleam
 import lap
 import gleam/io
