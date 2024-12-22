@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.3 - 2024-12-22
+
+- Update interface.
+
 ## v1.0.2 - 2024-12-21
 
 - Fix README.md example
