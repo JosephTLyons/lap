@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.4 - 2024-12-22
+
+- `pretty_print` now includes the duration unit in the table output.
+
 ## v1.0.3 - 2024-12-22
 
 - Update interface.
