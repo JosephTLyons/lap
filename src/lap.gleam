@@ -93,6 +93,8 @@ pub fn total_time(data: LapData) -> Int {
 }
 
 pub fn sort_max(data: LapData) -> LapData {
+  // We sort in ascending order because calling `intervals` reverses the order
+  // of the list
   let intervals =
     data.intervals
     |> list.sort(fn(a, b) { int.compare(a.duration, b.duration) })
