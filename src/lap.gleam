@@ -111,17 +111,8 @@ pub fn intervals(data: LapData) -> List(IntervalTuple) {
 }
 
 pub fn pretty_print(data: LapData) -> String {
-  let duration_unit_text = case data.duration_unit {
-    duration.MicroSecond -> "μs"
-    duration.MilliSecond -> "ms"
-    duration.Second -> "s"
-    duration.Minute -> "min"
-    duration.Hour -> "h"
-    duration.Day -> "d"
-    duration.Week -> "w"
-    duration.Month -> "mo"
-    duration.Year -> "y"
-  }
+  let duration_unit_label = duration_unit_label(data.duration_unit)
+
   let builder =
     tobble.builder()
     |> tobble.add_row(["Start", "End", "Interval"])
@@ -134,7 +125,7 @@ pub fn pretty_print(data: LapData) -> String {
       |> tobble.add_row([
         interval.0,
         interval.1,
-        { interval.2 |> int.to_string } <> " " <> duration_unit_text,
+        { interval.2 |> int.to_string } <> " " <> duration_unit_label,
       ])
     })
     |> tobble.build
@@ -142,5 +133,19 @@ pub fn pretty_print(data: LapData) -> String {
   case table {
     Ok(table) -> table |> tobble.render
     Error(_) -> ""
+  }
+}
+
+fn duration_unit_label(duration_unit: Unit) -> String {
+  case duration_unit {
+    duration.MicroSecond -> "μs"
+    duration.MilliSecond -> "ms"
+    duration.Second -> "s"
+    duration.Minute -> "min"
+    duration.Hour -> "h"
+    duration.Day -> "d"
+    duration.Week -> "w"
+    duration.Month -> "mo"
+    duration.Year -> "y"
   }
 }
