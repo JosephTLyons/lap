@@ -1,5 +1,6 @@
 import birl.{type Time}
 import birl/duration.{type Unit}
+import gleam/float
 import gleam/int
 import gleam/list
 import tobble
@@ -115,9 +116,11 @@ pub fn pretty_print(data: LapData) -> String {
 
   let builder =
     tobble.builder()
-    |> tobble.add_row(["Start", "End", "Interval"])
+    |> tobble.add_row(["Start", "End", "Interval", "%"])
 
-  let table =
+  let total_time = total_time(data)
+
+  let builder =
     data
     |> intervals
     |> list.fold(builder, fn(builder, interval) {
@@ -126,11 +129,11 @@ pub fn pretty_print(data: LapData) -> String {
         interval.0,
         interval.1,
         { interval.2 |> int.to_string } <> " " <> duration_unit_label,
+        to_rounded_percentage(interval.2, total_time) |> float.to_string,
       ])
     })
-    |> tobble.build
 
-  case table {
+  case tobble.build(builder) {
     Ok(table) -> table |> tobble.render
     Error(_) -> ""
   }
@@ -148,4 +151,18 @@ fn duration_unit_label(duration_unit: Unit) -> String {
     duration.Month -> "mo"
     duration.Year -> "y"
   }
+}
+
+fn to_percentage(a: Int, b: Int) -> Float {
+  let ratio = int.to_float(a) /. int.to_float(b)
+  ratio *. 100.0
+}
+
+fn to_rounded_percentage(a: Int, b: Int) -> Float {
+  let percentage = to_percentage(a, b)
+  {
+    { { percentage *. 100.0 } |> float.truncate }
+    |> int.to_float
+  }
+  /. 100.0
 }
