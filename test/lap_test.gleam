@@ -20,6 +20,10 @@ pub fn no_lap_test() {
   data
   |> lap.total_time
   |> should.equal(0)
+
+  data
+  |> lap.pretty_print
+  |> birdie.snap(title: "Pretty print empty table test")
 }
 
 pub fn multiple_lap_test() {
