@@ -42,12 +42,12 @@ pub fn multiple_lap_test() {
 
   data |> lap.total_time |> should.equal(60)
 
-  let intervals = data |> lap.intervals
-
-  intervals
+  data
+  |> lap.intervals
   |> should.equal([#("1", "2", 30), #("2", "3", 10), #("3", "4", 20)])
 
-  intervals
+  data
   |> lap.sort_max
+  |> lap.intervals
   |> should.equal([#("1", "2", 30), #("3", "4", 20), #("2", "3", 10)])
 }

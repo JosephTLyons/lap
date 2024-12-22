@@ -10,8 +10,9 @@ gleam add lap
 ```
 
 ```gleam
-import lap
+import gleam/int
 import gleam/io
+import lap
 
 pub fn main() {
   let data = lap.start_in_milliseconds("1")
@@ -27,12 +28,15 @@ pub fn main() {
   data |> lap.intervals |> io.debug
   // [#("1", "2", 10), #("2", "3", 30)]
 
-  data |> lap.intervals |> lap.sort_max |> lap.pretty_print |> io.println
+  data |> lap.sort_max |> lap.pretty_print |> io.println
   // +-------+-----+----------+
   // | Start | End | Interval |
   // +-------+-----+----------+
   // | 2     | 3   | 30       |
   // | 1     | 2   | 10       |
   // +-------+-----+----------+
+
+  data |> lap.total_time |> int.to_string |> io.println
+  // 40
 }
 ```

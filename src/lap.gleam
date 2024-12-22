@@ -15,11 +15,7 @@ pub opaque type LapData {
 }
 
 pub opaque type IntervalData {
-  IntervalData(
-    start_marker: String,
-    end_marker: String,
-    duration: duration.Duration,
-  )
+  IntervalData(start_marker: String, end_marker: String, duration: Int)
 }
 
 type IntervalTuple =
@@ -82,7 +78,8 @@ pub fn time_with_time(data: LapData, marker: String, time: Time) -> LapData {
       IntervalData(
         start_marker,
         end_marker,
-        birl.difference(time, data.last_time),
+        birl.difference(time, data.last_time)
+          |> duration.blur_to(data.duration_unit),
       ),
       ..data.intervals
     ],
@@ -95,30 +92,31 @@ pub fn total_time(data: LapData) -> Int {
   |> duration.blur_to(data.duration_unit)
 }
 
+pub fn sort_max(data: LapData) -> LapData {
+  let intervals =
+    data.intervals
+    |> list.sort(fn(a, b) { int.compare(a.duration, b.duration) })
+
+  LapData(..data, intervals: intervals)
+}
+
 pub fn intervals(data: LapData) -> List(IntervalTuple) {
   data.intervals
   |> list.map(fn(interval) {
-    #(
-      interval.start_marker,
-      interval.end_marker,
-      interval.duration |> duration.blur_to(data.duration_unit),
-    )
+    #(interval.start_marker, interval.end_marker, interval.duration)
   })
   |> list.reverse
 }
 
-pub fn sort_max(interval_list: List(IntervalTuple)) -> List(IntervalTuple) {
-  interval_list |> list.sort(fn(a, b) { int.compare(b.2, a.2) })
-}
-
-pub fn pretty_print(interval_list: List(IntervalTuple)) -> String {
-  let table =
+pub fn pretty_print(data: LapData) -> String {
+  let builder =
     tobble.builder()
     |> tobble.add_row(["Start", "End", "Interval"])
 
   let table =
-    interval_list
-    |> list.fold(table, fn(builder, interval) {
+    data
+    |> intervals
+    |> list.fold(builder, fn(builder, interval) {
       builder
       |> tobble.add_row([
         interval.0,
@@ -126,7 +124,7 @@ pub fn pretty_print(interval_list: List(IntervalTuple)) -> String {
         { interval.2 |> int.to_string },
       ])
     })
-    |> tobble.build()
+    |> tobble.build
 
   case table {
     Ok(table) -> table |> tobble.render
