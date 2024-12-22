@@ -103,6 +103,7 @@ pub fn sort_max(data: LapData) -> LapData {
   LapData(..data, intervals: intervals)
 }
 
+// TODO: Rename to `to_list` (breaking change)
 pub fn intervals(data: LapData) -> List(IntervalTuple) {
   data.intervals
   |> list.map(fn(interval) {
