@@ -5,6 +5,6 @@ file: ./test/lap_test.gleam
 test_name: no_lap_test
 ---
 +-------+-----+----------+---+
-| Start | End | Interval | % |
+| Start | End | Duration | % |
 +-------+-----+----------+---+
 +-------+-----+----------+---+

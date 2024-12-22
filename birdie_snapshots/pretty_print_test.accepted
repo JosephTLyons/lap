@@ -5,7 +5,7 @@ file: ./test/lap_test.gleam
 test_name: pretty_print_test
 ---
 +-------+-----+----------+-------+
-| Start | End | Interval | %     |
+| Start | End | Duration | %     |
 +-------+-----+----------+-------+
 | 1     | 2   | 30 ms    | 50.0  |
 | 2     | 3   | 10 ms    | 16.66 |

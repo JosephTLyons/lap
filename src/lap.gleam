@@ -116,7 +116,7 @@ pub fn pretty_print(data: LapData) -> String {
 
   let builder =
     tobble.builder()
-    |> tobble.add_row(["Start", "End", "Interval", "%"])
+    |> tobble.add_row(["Start", "End", "Duration", "%"])
 
   let total_time = total_time(data)
 
