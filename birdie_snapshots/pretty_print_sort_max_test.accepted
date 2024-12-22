@@ -1,0 +1,13 @@
+---
+version: 1.2.5
+title: Pretty print sort max test
+file: ./test/lap_test.gleam
+test_name: pretty_print_sort_max_test
+---
++-------+-----+----------+
+| Start | End | Interval |
++-------+-----+----------+
+| 1     | 2   | 30       |
+| 3     | 4   | 20       |
+| 2     | 3   | 10       |
++-------+-----+----------+
