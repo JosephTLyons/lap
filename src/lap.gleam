@@ -103,8 +103,7 @@ pub fn sort_max(data: LapData) -> LapData {
   LapData(..data, intervals: intervals)
 }
 
-// TODO: Rename to `to_list` (breaking change)
-pub fn intervals(data: LapData) -> List(IntervalTuple) {
+pub fn to_list(data: LapData) -> List(IntervalTuple) {
   data.intervals
   |> list.map(fn(interval) {
     #(interval.start_marker, interval.end_marker, interval.duration)
@@ -123,7 +122,7 @@ pub fn pretty_print(data: LapData) -> String {
 
   let builder =
     data
-    |> intervals
+    |> to_list
     |> list.fold(builder, fn(builder, interval) {
       builder
       |> tobble.add_row([

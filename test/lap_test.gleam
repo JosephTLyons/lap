@@ -14,7 +14,7 @@ pub fn no_lap_test() {
   let data = lap.start_with_time("1", duration.MilliSecond, time)
 
   data
-  |> lap.intervals
+  |> lap.to_list
   |> should.equal([])
 
   data
@@ -48,12 +48,12 @@ pub fn multiple_lap_test() {
   data |> lap.total_time |> should.equal(60)
 
   data
-  |> lap.intervals
+  |> lap.to_list
   |> should.equal([#("1", "2", 30), #("2", "3", 10), #("3", "4", 20)])
 
   data
   |> lap.sort_max
-  |> lap.intervals
+  |> lap.to_list
   |> should.equal([#("1", "2", 30), #("3", "4", 20), #("2", "3", 10)])
 }
 
