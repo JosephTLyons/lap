@@ -1,5 +1,5 @@
 name = "lap"
-version = "1.0.4"
+version = "1.0.5"
 
 description = "Quick'n dirty timing of your Gleam code."
 licences = ["Apache-2.0"]

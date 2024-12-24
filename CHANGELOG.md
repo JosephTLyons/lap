@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.5 - 2024-12-24
+
+- Added documentation.
+
 ## v1.0.4 - 2024-12-22
 
 - `pretty_print` now includes the duration unit in the table output.
