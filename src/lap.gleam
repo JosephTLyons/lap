@@ -83,19 +83,15 @@ pub fn time_with_time(data: LapData, marker: String, time: Time) -> LapData {
     [previous_duration, ..] -> #(previous_duration.end_marker, marker)
   }
 
-  LapData(
-    ..data,
-    last_time: time,
-    durations: [
-      DurationData(
-        start_marker,
-        end_marker,
-        birl.difference(time, data.last_time)
-          |> duration.blur_to(data.duration_unit),
-      ),
-      ..data.durations
-    ],
-  )
+  LapData(..data, last_time: time, durations: [
+    DurationData(
+      start_marker,
+      end_marker,
+      birl.difference(time, data.last_time)
+        |> duration.blur_to(data.duration_unit),
+    ),
+    ..data.durations
+  ])
 }
 
 /// Returns the total time elapsed from the first marker to the last marker, in
