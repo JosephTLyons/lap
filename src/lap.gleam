@@ -1,15 +1,15 @@
-import birl.{type Time}
-import birl/duration.{type Unit}
 import gleam/float
 import gleam/int
 import gleam/list
+import gleam/time/duration.{type Unit}
+import gleam/time/timestamp.{type Timestamp}
 import tobble
 
 pub opaque type LapData {
   LapData(
     first_marker: String,
-    first_time: Time,
-    last_time: Time,
+    first_time: Timestamp,
+    last_time: Timestamp,
     duration_unit: Unit,
     durations: List(DurationData),
   )
@@ -25,13 +25,13 @@ type DurationTuple =
 /// Begins a new timing session with the given marker and duration unit in
 /// microseconds.
 pub fn start_in_microseconds(marker: String) -> LapData {
-  start(marker, duration.MicroSecond)
+  start(marker, duration.Microsecond)
 }
 
 /// Begins a new timing session with the given marker and duration unit in
 /// milliseconds.
 pub fn start_in_milliseconds(marker: String) -> LapData {
-  start(marker, duration.MilliSecond)
+  start(marker, duration.Millisecond)
 }
 
 /// Begins a new timing session with the given marker and duration unit in
@@ -47,20 +47,20 @@ pub fn start_in_minutes(marker: String) -> LapData {
 }
 
 /// Begins a new timing session with the given marker and duration unit. The
-/// duration_unit is a [birl](https://hexdocs.pm/birl/) `Unit`.
+/// duration_unit is a [gleam_time](https://hexdocs.pm/gleam_time/) `Unit`.
 pub fn start(marker: String, duration_unit: Unit) -> LapData {
   // Warmup - I noticed in my testing that the first duration was always
-  // slightly longer than the others and that by calling birl.now, the durations
-  // are more consistent.
-  list.repeat(birl.now(), 3)
-  start_with_time(marker, duration_unit, birl.now())
+  // slightly longer than the others and that by calling
+  // timestamp.system_time(), the durations are more consistent.
+  list.repeat(timestamp.system_time(), 3)
+  start_with_time(marker, duration_unit, timestamp.system_time())
 }
 
 @internal
 pub fn start_with_time(
   marker: String,
   duration_unit: Unit,
-  time: Time,
+  time: Timestamp,
 ) -> LapData {
   LapData(
     first_marker: marker,
@@ -73,11 +73,11 @@ pub fn start_with_time(
 
 /// Marks the end of the current lap with the given marker.
 pub fn time(data: LapData, marker: String) -> LapData {
-  time_with_time(data, marker, birl.now())
+  time_with_time(data, marker, timestamp.system_time())
 }
 
 @internal
-pub fn time_with_time(data: LapData, marker: String, time: Time) -> LapData {
+pub fn time_with_time(data: LapData, marker: String, time: Timestamp) -> LapData {
   let #(start_marker, end_marker) = case data.durations {
     [] -> #(data.first_marker, marker)
     [previous_duration, ..] -> #(previous_duration.end_marker, marker)
@@ -87,8 +87,7 @@ pub fn time_with_time(data: LapData, marker: String, time: Time) -> LapData {
     DurationData(
       start_marker,
       end_marker,
-      birl.difference(time, data.last_time)
-        |> duration.blur_to(data.duration_unit),
+      difference(data.last_time, time, data.duration_unit),
     ),
     ..data.durations
   ])
@@ -97,9 +96,27 @@ pub fn time_with_time(data: LapData, marker: String, time: Time) -> LapData {
 /// Returns the total time elapsed from the first marker to the last marker, in
 /// the duration unit specified via one of the start functions.
 pub fn total_time(data: LapData) -> Int {
-  data.last_time
-  |> birl.difference(data.first_time)
-  |> duration.blur_to(data.duration_unit)
+  difference(data.first_time, data.last_time, data.duration_unit)
+}
+
+fn difference(left: Timestamp, right: Timestamp, duration_unit: Unit) -> Int {
+  let #(seconds, nanoseconds) =
+    left
+    |> timestamp.difference(right)
+    |> duration.to_seconds_and_nanoseconds
+
+  case duration_unit {
+    duration.Nanosecond -> seconds * 1_000_000_000 + nanoseconds
+    duration.Microsecond -> seconds * 1_000_000 + nanoseconds / 1000
+    duration.Millisecond -> seconds * 1000 + nanoseconds / 1_000_000
+    duration.Second -> seconds
+    duration.Minute -> seconds / 60
+    duration.Hour -> seconds / 3600
+    duration.Day -> seconds / 86_400
+    duration.Week -> seconds / 604_800
+    duration.Month -> seconds / 2_592_000
+    duration.Year -> seconds / 31_536_000
+  }
 }
 
 /// Sorts the durations in descending order. This is useful for identifying the
@@ -158,8 +175,9 @@ pub fn pretty_print(data: LapData) -> String {
 
 fn duration_unit_label(duration_unit: Unit) -> String {
   case duration_unit {
-    duration.MicroSecond -> "μs"
-    duration.MilliSecond -> "ms"
+    duration.Nanosecond -> "ns"
+    duration.Microsecond -> "μs"
+    duration.Millisecond -> "ms"
     duration.Second -> "s"
     duration.Minute -> "min"
     duration.Hour -> "h"

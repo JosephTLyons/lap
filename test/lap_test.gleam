@@ -1,6 +1,6 @@
 import birdie
-import birl
-import birl/duration
+import gleam/time/duration
+import gleam/time/timestamp
 import gleeunit
 import lap
 
@@ -9,8 +9,8 @@ pub fn main() {
 }
 
 pub fn no_lap_test() {
-  let assert Ok(time) = birl.parse("1990-04-12T00:00:00.000Z")
-  let data = lap.start_with_time("1", duration.MilliSecond, time)
+  let assert Ok(time) = timestamp.parse_rfc3339("1990-04-12T00:00:00.000Z")
+  let data = lap.start_with_time("1", duration.Millisecond, time)
 
   assert lap.to_list(data) == []
   assert lap.total_time(data) == 0
@@ -21,22 +21,22 @@ pub fn no_lap_test() {
 }
 
 pub fn multiple_lap_test() {
-  let assert Ok(time) = birl.parse("1990-04-12T00:00:00.000Z")
-  let data = lap.start_with_time("1", duration.MilliSecond, time)
+  let assert Ok(time) = timestamp.parse_rfc3339("1990-04-12T00:00:00.000Z")
+  let data = lap.start_with_time("1", duration.Millisecond, time)
 
   assert lap.total_time(data) == 0
 
-  let assert Ok(time) = birl.parse("1990-04-12T00:00:00.030Z")
+  let assert Ok(time) = timestamp.parse_rfc3339("1990-04-12T00:00:00.030Z")
   let data = data |> lap.time_with_time("2", time)
 
   assert lap.total_time(data) == 30
 
-  let assert Ok(time) = birl.parse("1990-04-12T00:00:00.040Z")
+  let assert Ok(time) = timestamp.parse_rfc3339("1990-04-12T00:00:00.040Z")
   let data = data |> lap.time_with_time("3", time)
 
   assert lap.total_time(data) == 40
 
-  let assert Ok(time) = birl.parse("1990-04-12T00:00:00.060Z")
+  let assert Ok(time) = timestamp.parse_rfc3339("1990-04-12T00:00:00.060Z")
   let data = data |> lap.time_with_time("4", time)
 
   assert lap.total_time(data) == 60
@@ -51,16 +51,16 @@ pub fn multiple_lap_test() {
 }
 
 pub fn pretty_print_test() {
-  let assert Ok(time) = birl.parse("1990-04-12T00:00:00.000Z")
-  let data = lap.start_with_time("1", duration.MilliSecond, time)
+  let assert Ok(time) = timestamp.parse_rfc3339("1990-04-12T00:00:00.000Z")
+  let data = lap.start_with_time("1", duration.Millisecond, time)
 
-  let assert Ok(time) = birl.parse("1990-04-12T00:00:00.030Z")
+  let assert Ok(time) = timestamp.parse_rfc3339("1990-04-12T00:00:00.030Z")
   let data = data |> lap.time_with_time("2", time)
 
-  let assert Ok(time) = birl.parse("1990-04-12T00:00:00.040Z")
+  let assert Ok(time) = timestamp.parse_rfc3339("1990-04-12T00:00:00.040Z")
   let data = data |> lap.time_with_time("3", time)
 
-  let assert Ok(time) = birl.parse("1990-04-12T00:00:00.060Z")
+  let assert Ok(time) = timestamp.parse_rfc3339("1990-04-12T00:00:00.060Z")
   let data = data |> lap.time_with_time("4", time)
 
   data
@@ -69,16 +69,16 @@ pub fn pretty_print_test() {
 }
 
 pub fn pretty_print_sort_max_test() {
-  let assert Ok(time) = birl.parse("1990-04-12T00:00:00.000Z")
-  let data = lap.start_with_time("1", duration.MilliSecond, time)
+  let assert Ok(time) = timestamp.parse_rfc3339("1990-04-12T00:00:00.000Z")
+  let data = lap.start_with_time("1", duration.Millisecond, time)
 
-  let assert Ok(time) = birl.parse("1990-04-12T00:00:00.030Z")
+  let assert Ok(time) = timestamp.parse_rfc3339("1990-04-12T00:00:00.030Z")
   let data = data |> lap.time_with_time("2", time)
 
-  let assert Ok(time) = birl.parse("1990-04-12T00:00:00.040Z")
+  let assert Ok(time) = timestamp.parse_rfc3339("1990-04-12T00:00:00.040Z")
   let data = data |> lap.time_with_time("3", time)
 
-  let assert Ok(time) = birl.parse("1990-04-12T00:00:00.060Z")
+  let assert Ok(time) = timestamp.parse_rfc3339("1990-04-12T00:00:00.060Z")
   let data = data |> lap.time_with_time("4", time)
 
   data
